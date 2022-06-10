@@ -1,7 +1,7 @@
-
+//import mysql
 const mysql= require('mysql2');
 
-
+//connecting with database info
 const connection= mysql.createConnection({
     host:'localhost',
     user:'root',
