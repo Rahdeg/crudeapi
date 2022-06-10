@@ -35,17 +35,21 @@ exports.signin=(req,res)=>{
            if (err) {
                console.log(err)
                res.send(err)
-           } else {
-              if (bcrypt.compareSync(hash,data.hash)) {
-                  const token =jwt.sign({id:data.id},'1234567890',{expiresIn:'1d'}); 
-                  res.send({status:'successful' ,data:{
-                      token,
-                      hash:data.hash,
-                      email:data.email,
-                  }});                 
-              } else {
-                  res.send({status:'erroe' ,message:'incorrect password'});
-              }
+               return;
+           } if (data) {
+               if (bcrypt.compareSync(hash,data[0].hash)) {
+                const token= jwt.sign({id:data.id},"123456789",{expiresIn:'1d'})
+                   res.send({
+                       status: 'ok',
+                       data:{
+                           token,
+                           email: data[0].email,
+                           hash: data[0].hash
+                       }
+                   })
+               } else {
+                   res.send(err)
+               }
            }
        })
     
