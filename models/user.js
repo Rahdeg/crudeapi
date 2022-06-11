@@ -4,9 +4,8 @@ const db = require('../config/db.config');
 
 //user constructor
 class User {
-    constructor(firstname, lastname, email, password){
-        this.firstname = firstname,
-        this.lastname = lastname,
+    constructor(username, email, password){
+        this.username = username,
         this.email = email,
         this.password = password 
     }
@@ -14,8 +13,8 @@ class User {
 
 //create a new user model
 static  createUser(newUser,result){
-    db.query('INSERT INTO users VALUES(NULL,?,?,?,?,NOW())',
-    [newUser.firstname, newUser.lastname,newUser.email,newUser.password],(err,res)=>{
+    db.query('INSERT INTO users VALUES(NULL,?,?,?,NOW())',
+    [newUser.username, newUser.email,newUser.password],(err,res)=>{
         if (err) {
             console.log('error: ', err);
             result(null,err);
