@@ -9,11 +9,11 @@ const jwt = require('jsonwebtoken');
         if (!req.body) {
             res.send({message:'fill in the required'})
         }
-        const {firstname, lastname, email, password}=req.body;
+        const {username, email, password}=req.body;
         const salt= bcrypt.genSaltSync(10);
         const hashed= bcrypt.hashSync(password,salt);
         const hashedPass= hashed;
-        const user = new User(firstname,lastname,email,hashedPass)
+        const user = new User(username,email,hashedPass)
         User.createUser(user,(err,info) => {
             if (err) {
                 res.send(err)
