@@ -41,13 +41,14 @@ static checkEmail(email,result){
 
 //get all user model
 static getLogins(result){
-    db.query('SELECT * FROM login',(err,data)=>{
+    const dataFromUsers = 'SELECT * FROM login';
+    db.query(dataFromUsers, (err, data) => {
         if (err) {
-            console.log('error fetching data',err);
-            result(null,err);
-        }else{
-            console.log('Data fetched successfuly');
-            result(null,data);
+            console.log('Error fetching data', err);
+            result(null, err);
+        } else {
+            console.log('Data fetched successful');
+            result(null, data);
         }
     })
 }

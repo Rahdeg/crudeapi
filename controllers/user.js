@@ -71,8 +71,8 @@ exports.updateUser=(req,res)=>{
 }
 
 //get user controller
-exports.getAll=(req,res)=>{
-    User.getLogins((err,data)=>{
+exports.getAll=(req, res)=>{
+    User.getLogins((err, data)=>{
         if (err) {
             res.status(400).send({
                 error: err.message || 'Some error occurred'
