@@ -4,24 +4,24 @@ const db = require('../config/db.config');
 
 //user constructor
 class User {
-    constructor(id,hash,email){
-        this.id = id,
-        this.hash = hash, 
-        this.email = email
+    constructor(username, email, password){
+        this.username = username,
+        this.email = email,
+        this.password = password 
     }
 
 
 //create a new user model
 static  createUser(newUser,result){
-    db.query('INSERT INTO login VALUES(?,?,?)',
-    [newUser.id,newUser.hash,newUser.email],(err,res)=>{
+    db.query('INSERT INTO users VALUES(NULL,?,?,?,NOW())',
+    [newUser.username, newUser.email,newUser.password],(err,res)=>{
         if (err) {
             console.log('error: ', err);
             result(null,err);
             
         } else {
-            console.log('user created');
-        result(null,{id:res.insertId,...newUser})
+            console.log('user created successfully');
+        result(null,{...newUser})
         }
     })
 }

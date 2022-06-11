@@ -9,17 +9,15 @@ const jwt = require('jsonwebtoken');
         if (!req.body) {
             res.send({message:'fill in the required'})
         }
-        const {id,hash,email}=req.body;
+        const {username, email, password}=req.body;
         const salt= bcrypt.genSaltSync(10);
-        const hashed= bcrypt.hashSync(hash,salt);
-        const encrypedPass= hashed;
-        const user = new User(id,encrypedPass,email)
+        const hashed= bcrypt.hashSync(password,salt);
+        const hashedPass= hashed;
+        const user = new User(username,email,hashedPass)
         User.createUser(user,(err,info) => {
-            console.log('i am in')
             if (err) {
                 res.send(err)
             } else {
-                console.log('info: ',info)
                 res.send(info)
             }
         })
