@@ -1,5 +1,7 @@
-const loginModel = require('../models/user')
-
+//import model
+const User = require('../models/user')
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Create and Save a new User
 exports.create = (req, res) => {
@@ -101,10 +103,32 @@ exports.delete = (req, res) => {
   });
 };
 
-// exports.signUp=(req,res)=>{
-//     console.log('Welcome to signup page');
-// }
-
-// exports.getAll=(req,res)=>{
-//     console.log('Getting All from Database');
-// }
+// signin user controller
+exports.signin=(req,res)=>{
+    if (!req.body) {
+       res.send({message: 'fill in required fields'});
+     }
+       const {hash,email} = req.body;
+       User.checkEmail(email,(err,data)=>{
+           if (err) {
+               console.log(err)
+               res.send(err)
+               return;
+           } if (data) {
+               if (bcrypt.compareSync(hash,data[0].hash)) {
+                const token= jwt.sign({id:data.id},"123456789",{expiresIn:'1d'})
+                   res.send({
+                       status: 'ok',
+                       data:{
+                           token,
+                           email: data[0].email,
+                           hash: data[0].hash
+                       }
+                   })
+               } else {
+                   res.send(err)
+               }
+           }
+       })
+    
+}

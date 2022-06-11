@@ -4,12 +4,16 @@ const userController = require('../controllers/user');
 
 //create user
 router.post('/', userController.create);
+=======
+router.post('/signup',userController.signup);
+
+router.post('/signin',userController.signin);
+
 
 //retrieve * users
 router.get('/', userController.findAll);
 
-//retrieve a single user
-router.get('/:id', userController.findOne);
+
 
 //update a user (with id)
 router.put('/:id', userController.update);
@@ -20,9 +24,6 @@ router.delete('/:id', userController.delete);
 
 
 
-//srouter.post('/signup',userController.signUp);
-
-//srouter.get('/', userController.getAll);
 
 
 module.exports = router;
