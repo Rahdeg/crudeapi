@@ -20,18 +20,25 @@ class User{
         });
     }
 
-    static findByEmail(email,results){
-        db.query('SELECT *FROM users WHERE email=?',email,(err, res)=>{
-            if (err) {
-                console.log('incorrect login details');
-                results(null,err);
-            } else {
-                console.log(res[0]);
-                results(null,res[0]);
-            }
-            results(null,{kind:'not found'})
-        })
-    }
+    static findByEmail(email, result) {
+        db.query('SELECT *FROM users WHERE email=?', email, (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+          }
+    
+          if (res.length) {
+            console.log("found email: ", res[0]);
+            result(null, res[0]);
+            return;
+          }
+    
+          // not found
+          result({ kind: "not_found" }, null);
+        });
+      }
+    
 
     static findById(id, results) {
         db.query(`SELECT * FROM users WHERE id = ?`, [id], (err, res) => {

@@ -127,31 +127,42 @@ exports.delete = (req, res) => {
 };
 
 // signin user controller
-exports.signin=(req,res)=>{
-    if (!req.body) {
-       res.send({message: 'fill in required fields'});
-     }
-       const {password,email} = req.body;
-       User.findByEmail(email,(err,data)=>{
-           if (err) {
-               console.log(err)
-               res.send(err)
-               return;
-           } if (data) {
-               if (bcrypt.compareSync(password,data.password)) {
-                const token= jwt.sign({id:data.id},"123456789",{expiresIn:'1d'})
-                   res.send({
-                       status: 'ok',
-                       data:{
-                           token,
-                           email: data.email,
-                           password: data.password
-                       }
-                   })
-               } else {
-                   res.send(err)
-               }
-           }
-       })
-    
-}
+exports.signin = (req, res) => {
+  const { email, password } = req.body;
+  User.findByEmail(email.trim(), (err, data) => {
+    if (err) {
+      if(err.kind === "not_found") {
+        res.status(404).send({
+          status: "error",
+          message: `A user with this email ${email} does not exist`
+        })
+        return;
+      }
+       res.status(500).send({
+         status: "error",
+        message: err.message || "Some error occurred while retrieving users.",
+      });
+      return;
+    } 
+    if (data) {
+      if (bcrypt.compareSync(password.trim(), data.password)) {
+        const token= jwt.sign({id:data.id},"123456789",{expiresIn:'1d'});
+          res.status(200).send({
+              status: 'success',
+              data: {
+                  token,
+                  firstname: data.firstname,
+                  lastname: data.lastname,
+                  email: data.email
+              }
+          });
+          return;
+      }
+      res.status(401).send({
+          status: 'error',
+          message: 'Incorrect password'
+      });
+  }
+  
+  });
+};
