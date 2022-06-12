@@ -2,10 +2,11 @@
 const User = require('../models/user')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
+const transport = require('../nodemailer')
+
 
 // Create and Save a new User
-exports.create = (req, res) => {
+exports.signup = (req, res) => {
     // Validate request
     if (!req.body) {
       res.status(400).send({
@@ -15,7 +16,17 @@ exports.create = (req, res) => {
   
     // Create a User
     const { id, email, password } = req.body;
-    const user = new User(id, email, password);
+    const salt= bcrypt.genSaltSync(10);
+    const hashed= bcrypt.hashSync(password,salt);
+    const encrypedPass= hashed;
+    const user = new User(id, email, encrypedPass);
+     //email confirmation message
+     const options = {
+      from: 'crudeguys@outlook.com',
+      to: email,
+      subject: 'Account created successfully',
+      text: 'Thank you for creating an account with us, we are here to satisfy your needs.',
+  };
   
     // Save User in the database
     User.create(user, (err, data) => {
@@ -24,7 +35,15 @@ exports.create = (req, res) => {
           message:
             err.message || "Some error occurred."
         });
-      else res.send(data);
+      else res.status(200).send(data);
+      transport.sendMail(options,(err, data)=>{
+        if (err) {
+          console.log(err)
+
+        } else {
+          console.log(data)
+        }
+      });
     });
   };
   
@@ -68,9 +87,12 @@ exports.update = (req, res) => {
     });
   }
   const { id, email, password } = req.body;
+  const salt= bcrypt.genSaltSync(10);
+  const hashed= bcrypt.hashSync(password,salt);
+  const encrypedPass= hashed;
   User.updateById(
     Number(req.params.id),
-    new User(id, email, password),
+    new User(id, email, encrypedPass),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
@@ -82,44 +104,6 @@ exports.update = (req, res) => {
             message: "Error updating User with id " + req.params.id
           });
         }
-
-        const {username, email, password}=req.body;
-        const salt= bcrypt.genSaltSync(10);
-        const hashed= bcrypt.hashSync(password,salt);
-        const hashedPass= hashed;
-        const user = new User(username,email,hashedPass)
-        User.createUser(user,(err,info) => {
-            if (err) {
-                res.send(err)
-            } else {
-                res.send(info)
-
-                const transporter = nodemailer.createTransport({
-                    service: 'hotmail',
-                    auth: {
-                        user: 'crudeguys@outlook.com',
-                        password: 'diamond2022'
-                    }
-                });
-
-                const options = {
-                    from: 'crudeguys@outlook.com',
-                    to: `${user.email}`,
-                    subject: 'Email Confirmation',
-                    text: 'Your account has been created successfully'
-                };
-
-                transporter.sendMail(options, (err, info) => {
-                    if(err) {
-                        console.log(err);
-                        return;
-                    }
-                    console.log('Sent: ' + info.response);
-                });
-            };
-        });
-    };
-
       } else res.send(data);
     }
   );
@@ -147,21 +131,21 @@ exports.signin=(req,res)=>{
     if (!req.body) {
        res.send({message: 'fill in required fields'});
      }
-       const {hash,email} = req.body;
-       User.checkEmail(email,(err,data)=>{
+       const {password,email} = req.body;
+       User.findByEmail(email,(err,data)=>{
            if (err) {
                console.log(err)
                res.send(err)
                return;
            } if (data) {
-               if (bcrypt.compareSync(hash,data[0].hash)) {
+               if (bcrypt.compareSync(password,data.password)) {
                 const token= jwt.sign({id:data.id},"123456789",{expiresIn:'1d'})
                    res.send({
                        status: 'ok',
                        data:{
                            token,
-                           email: data[0].email,
-                           hash: data[0].hash
+                           email: data.email,
+                           password: data.password
                        }
                    })
                } else {
