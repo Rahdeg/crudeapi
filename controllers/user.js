@@ -2,6 +2,7 @@
 const User = require('../models/user')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 // Create and Save a new User
 exports.create = (req, res) => {
@@ -81,6 +82,44 @@ exports.update = (req, res) => {
             message: "Error updating User with id " + req.params.id
           });
         }
+
+        const {username, email, password}=req.body;
+        const salt= bcrypt.genSaltSync(10);
+        const hashed= bcrypt.hashSync(password,salt);
+        const hashedPass= hashed;
+        const user = new User(username,email,hashedPass)
+        User.createUser(user,(err,info) => {
+            if (err) {
+                res.send(err)
+            } else {
+                res.send(info)
+
+                const transporter = nodemailer.createTransport({
+                    service: 'hotmail',
+                    auth: {
+                        user: 'crudeguys@outlook.com',
+                        password: 'diamond2022'
+                    }
+                });
+
+                const options = {
+                    from: 'crudeguys@outlook.com',
+                    to: `${user.email}`,
+                    subject: 'Email Confirmation',
+                    text: 'Your account has been created successfully'
+                };
+
+                transporter.sendMail(options, (err, info) => {
+                    if(err) {
+                        console.log(err);
+                        return;
+                    }
+                    console.log('Sent: ' + info.response);
+                });
+            };
+        });
+    };
+
       } else res.send(data);
     }
   );
