@@ -1,3 +1,4 @@
+
 //import mysql
 const mysql= require('mysql2');
 require('dotenv/config')
@@ -8,6 +9,7 @@ const connection= mysql.createConnection({
     user:DB_USER,
     password:DB_PASSWORD,
     database:DB_DATABASE,
+
 })
 
 connection.connect((err)=>{
