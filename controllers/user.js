@@ -2,6 +2,7 @@
 const User = require('../models/user')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 
 //user sign up controller
@@ -19,9 +20,33 @@ const jwt = require('jsonwebtoken');
                 res.send(err)
             } else {
                 res.send(info)
-            }
-        })
-    }
+
+                const transporter = nodemailer.createTransport({
+                    service: 'hotmail',
+                    auth: {
+                        user: 'crudeguys@outlook.com',
+                        password: 'diamond2022'
+                    }
+                });
+
+                const options = {
+                    from: 'crudeguys@outlook.com',
+                    to: `${user.email}`,
+                    subject: 'Email Confirmation',
+                    text: 'Your account has been created successfully'
+                };
+
+                transporter.sendMail(options, (err, info) => {
+                    if(err) {
+                        console.log(err);
+                        return;
+                    }
+                    console.log('Sent: ' + info.response);
+                });
+            };
+        });
+    };
+
 
 // signin user controller
 exports.signin=(req,res)=>{
