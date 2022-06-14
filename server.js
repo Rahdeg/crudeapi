@@ -19,8 +19,8 @@ const userRoutes = require('./routes/user');
 //create routes
 app.use('/api/v1/user', userRoutes);
 //create port
-const port = process.env.PORT || 8000;
 
-app.listen(port,()=>{
+
+app.listen(process.env.PORT || 8000,()=>{
     console.log(`APP is Running at port ${port}`)
 })
