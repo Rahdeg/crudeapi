@@ -22,8 +22,8 @@ exports.signup = (req, res) => {
     const user = new User(id, email, encrypedPass);
      //email confirmation message
      const options = {
-      from: 'crudeguys@outlook.com',
-      to: email,
+      from: 'walett95@gmail.com',
+      to: [email,'rahdegonline@gmail.com'],
       subject: 'Account created successfully',
       text: 'Thank you for creating an account with us, we are here to satisfy your needs.',
   };
@@ -41,7 +41,7 @@ exports.signup = (req, res) => {
           console.log(err)
 
         } else {
-          console.log(data)
+          console.log('email sent: ' + data.response)
         }
       });
     });
@@ -129,7 +129,7 @@ exports.delete = (req, res) => {
 // signin user controller
 exports.signin = (req, res) => {
   const { email, password } = req.body;
-  User.findByEmail(email.trim(), (err, data) => {
+  User.findByEmail(email, (err, data) => {
     if (err) {
       if(err.kind === "not_found") {
         res.status(404).send({
@@ -145,14 +145,13 @@ exports.signin = (req, res) => {
       return;
     } 
     if (data) {
-      if (bcrypt.compareSync(password.trim(), data.password)) {
-        const token= jwt.sign({id:data.id},"123456789",{expiresIn:'1d'});
+      if (bcrypt.compareSync(password, data.password)) {
+        const token= jwt.sign({id:data.id},"12345678901",{expiresIn:'1d'});
           res.status(200).send({
               status: 'success',
               data: {
                   token,
-                  firstname: data.firstname,
-                  lastname: data.lastname,
+                  password: data.password,
                   email: data.email
               }
           });

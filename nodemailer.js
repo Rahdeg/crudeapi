@@ -2,12 +2,14 @@ const nodemailer = require('nodemailer');
 
 
 const transporter = nodemailer.createTransport({
-    service: 'hotmail',
+    service: 'gmail',
     auth: {
-        user:'crudeguys@outlook.com',
-        pass:'diamond2022'
+        user:'walett95@gmail.com',
+        pass:'gmmxydmtwapciucf'
     }
 });
+
+
 
 
 
