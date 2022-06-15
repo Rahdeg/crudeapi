@@ -73,5 +73,9 @@ exports.createTables=()=>{
 }
 
 this.createDB();
-process.exitCode=0;
+
+setTimeout(()=>{
+    process.exit(0);
+},2000);
+
 
