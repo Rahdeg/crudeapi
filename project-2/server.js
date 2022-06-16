@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const { createDB, createTables } = require("./src/config/db.init");
+const userRoutes = require("./src/routes/user");
+const taskRoutes = require("./src/routes/task");
+
 const app = express();
 
 app.use(express.json());
@@ -16,6 +18,9 @@ app.get("/", (req, res) => {
     },
   });
 });
+
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/task", taskRoutes);
 
 const PORT = process.env.PORT || 3000;
 
