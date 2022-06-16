@@ -1,10 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const taskController = require('../controllers/task');
+const taskController = require("../controllers/task");
 
-router.get('/',taskController.getTask);
+router.get("/", taskController.getTask);
 
-
+// filterBy can be [completed] or [notCompleted]
+router.get("/filter/:filterBy", taskController.filterTasks);
 
 module.exports = router;

@@ -24,7 +24,9 @@ exports.createDB = () => {
     if (err) {
       return console.log(err);
     }
+
     this.createTables();
+
     return console.log(`DATABASE ${DB_NAME} created successfully`);
   });
 };
@@ -40,11 +42,12 @@ CREATE TABLE IF NOT EXISTS users (
 `;
 
 const createTodoTable = `
-CREATE TABLE IF NOT EXISTS todos(
+CREATE TABLE IF NOT EXISTS todos (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user INT,
-    FOREIGN KEY (user) REFERENCES users(id),
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
     todo VARCHAR(2000) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT "notCompleted",
     created_on TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
 )
 `;
@@ -56,12 +59,14 @@ exports.createTables = () => {
     password: DB_PASSWORD,
     database: DB_NAME,
   });
+
   connection.query(createUserTable, (err, _) => {
     if (err) {
       return console.log(err);
     }
     return console.log("User Table Created Successfully");
   });
+
   connection.query(createTodoTable, (err, _) => {
     if (err) {
       return console.log(err);
