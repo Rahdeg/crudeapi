@@ -1,4 +1,4 @@
-const Todo = require('../models/todo');
+const Task = require('../models/Task');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const transport = require('../nodemailer');
@@ -13,9 +13,9 @@ exports.update = (req, res) => {
       });
     }
     const { id, user } = req.body;
-    Todo.updateById(
+    Task.updateById(
       Number(req.params.id),
-      new Todo(id, user),
+      new Task(id, user),
       (err, data) => {
          if (err) {
           if (err.kind === "not_found") {
@@ -24,7 +24,7 @@ exports.update = (req, res) => {
             });
           } else {
             res.status(500).send({
-              message: "Error updating Todo with id " + req.params.id
+              message: "Error updating Task with id " + req.params.id
             });
           }
         } else res.send(data), {

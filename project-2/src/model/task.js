@@ -1,8 +1,8 @@
 //import database
-const db = require('../config/db.config');
+const db = require('../utils/database');
 
-class Todo{
-    constructor(id, user, todo) {
+class Task{
+    constructor(id, user, Task) {
       this.id = id;
       this.user = user;
       this.todo = todo;
@@ -10,7 +10,7 @@ class Todo{
     //update task by id
     static updateById(id, user, result){
       db.query(
-        "UPDATE task SET id = ?, user = ?, todo = ? WHERE id = ?",
+        "UPDATE task SET id = ?, user = ?, Task = ? WHERE id = ?",
         [todo.id, todo.user, id],
         (err, res) => {
           if (err) {
@@ -23,12 +23,12 @@ class Todo{
             result({ kind: "not_found" }, null);
             return;
           }
-          console.log("task updated: ", { ...todo });
-          result(null, { ...todo });
+          console.log("task updated: ", { ...Task });
+          result(null, { ...Task });
         }
       );
     }
   
   }
 
-module.exports = Todo;
+module.exports = Task;
