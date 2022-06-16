@@ -1,5 +1,5 @@
 const mysql = require("mysql2");
-const { createDB } = require("../../../../../SH32-capstone2/src/database/queries");
+
 require('dotenv/config');
 
 const DB_HOST = process.env.DB_HOST;
@@ -9,8 +9,8 @@ const DB_NAME = process.env.DB_NAME;
 
 const connection = mysql.createConnection({
     host: DB_HOST,
-    user:DB_USER,
-    password:DB_PASSWORD
+    user: DB_USER,
+    password :DB_PASSWORD
 })
 
 connection.connect((err)=>{
