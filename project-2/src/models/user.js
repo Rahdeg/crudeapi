@@ -45,6 +45,8 @@ class User {
     });
   }
 
+  //   This will remove the password field from being displayed
+  //   in the data result at the frontend for security reasons.
   static filterOutPasswordField(data) {
     const filteredData = Object.fromEntries(
       Object.entries(data).filter(([key]) => !key.includes("password"))
