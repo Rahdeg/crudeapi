@@ -69,9 +69,6 @@ exports.login = (req, res) => {
 
     // Handle when the user exist
     if (data) {
-      const salt = bcrypt.genSaltSync(10);
-      const hashed = bcrypt.hashSync(password, salt);
-
       //   Compare the typed password with the user's password hash
       if (bcrypt.compareSync(password, data.password)) {
         // Create a token for the user
