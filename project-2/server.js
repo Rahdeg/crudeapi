@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
-const {createDB, createTables} = require('./src/config/db.init');
 const app = express();
+const userRoutes = require('./src/routes/user');
+const taskRoutes = require('./src/routes/task');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -17,9 +18,12 @@ app.get('/', (req, res) => {
     });
 });
 
+app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/task', taskRoutes);
 
-const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`Running on PORT ${PORT}`);
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`Running on PORT ${port}`);
 });

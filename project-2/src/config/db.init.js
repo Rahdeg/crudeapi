@@ -1,5 +1,4 @@
 const mysql = require("mysql2");
-const { createDB } = require("../../../../../SH32-capstone2/src/database/queries");
 require('dotenv/config');
 
 const DB_HOST = process.env.DB_HOST;
