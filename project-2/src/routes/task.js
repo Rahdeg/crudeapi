@@ -1,11 +1,13 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const taskController = require('../controllers/task');
-
-router.get('/',taskController.getTask);
+const taskController = require("../controllers/task");
 
 //update task by id
-router.put('/:id', taskController.update);
+router.put("/:id", taskController.update);
+router.get("/", taskController.getTask);
+
+// filterBy can be [completed] or [notCompleted]
+router.get("/filter/:filterBy", taskController.filterTasks);
 
 module.exports = router;
