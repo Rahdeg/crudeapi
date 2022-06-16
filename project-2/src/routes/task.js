@@ -10,4 +10,8 @@ router.get("/", taskController.getTask);
 // filterBy can be [completed] or [notCompleted]
 router.get("/filter/:filterBy", taskController.filterTasks);
 
+// router.put('/:id', taskController.update);
+
+
+router.delete('/:id', taskController.deleteTask)
 module.exports = router;
