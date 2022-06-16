@@ -20,8 +20,20 @@ class Task{
                 results(null,err);
             } else {
                 console.log("users: ", res);
-                results(res)
+                results(null,res)
             }
+        })
+    }
+
+    static delete(id, cb){
+        db.query(`DELETE FROM todos WHERE id = ?`,id,(err, res)=>{
+            if (err){
+                return cb(err, null)
+            }
+            return cb(null, {
+                msg:"todo deleted successfully",
+                id:id
+            })
         })
     }
 

@@ -12,3 +12,12 @@ exports.getTask = (req,res)=> {
         }
     })
 }
+
+exports.deleteTask = (req,res)=>{
+    Task.delete(req.params.id,(err, data)=>{
+        if (err){
+            return res.status(400).send({err});
+        }
+        return res.status(200).send(data);
+    })
+}
