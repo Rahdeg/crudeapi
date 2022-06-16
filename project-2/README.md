@@ -1,6 +1,6 @@
 # TO DO
 ## Description
-This is the second portfolio project of the SideHustle Bootcamp Cohort 6.0
+This is the second portfolio project of the SideHustle Bootcamp Cohort 5.0
 
 It consists of the following
 features:
