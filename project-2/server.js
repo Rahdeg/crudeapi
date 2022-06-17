@@ -22,6 +22,14 @@ app.get("/", (req, res) => {
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/task", taskRoutes);
 
+// Handle when an invalid route is hitted
+app.all("*", (req, res) => {
+  res.send({
+    status: false,
+    messsage: "Oops! you've hitted an invalid route.",
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
