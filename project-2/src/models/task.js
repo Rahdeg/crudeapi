@@ -8,11 +8,6 @@ class Task{
         this.created_on=created_on;
     }
 
-    
-
-
-
-
     static getALL(results){
         db.query("SELECT * FROM todos",(err,res)=>{
             if (err) {
@@ -24,6 +19,18 @@ class Task{
             }
         })
     }
+
+    static create(newTask, result) {
+        db.query(`INSERT INTO todos VALUES(?, ?, ?, ?)`, [newTask.id, newTask.user, newTask.todo, newTask.created_on], (err, res) =>{
+            if(err){
+                console.log("error ", err);
+                result(err, null);
+                return;
+            }
+            console.log("created task", { ...newTask});
+            result(null, {...newTask});
+        });
+    };
 
 
 }
