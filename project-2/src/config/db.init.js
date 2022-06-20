@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS todos (
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     todo VARCHAR(2000) NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT "notCompleted",
+    status BOOLEAN DEFAULT 0,
     created_on TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
 )
 `;

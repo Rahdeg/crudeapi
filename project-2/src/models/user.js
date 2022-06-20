@@ -1,12 +1,10 @@
 const db = require("../utils/database");
 
 class User {
-  constructor(id, username, email, password, created_on) {
-    this.id = id;
+  constructor( username, email, password) {
     this.username = username;
     this.email = email;
     this.password = password;
-    this.created_on = created_on;
   }
 
   static create(newUser, result) {
@@ -24,6 +22,59 @@ class User {
       }
     );
   }
+
+  static findById(id, results) {
+    db.query(`SELECT * FROM users WHERE id = ?`, [id], (err, res) => {
+        if (err) {
+            console.log("error ", err);
+            results(err, null);
+            return;
+        }
+        if (res.length) {
+            console.log("found user: ", res[0]);
+            results(null, res[0]);
+            return;
+        }
+        // if not found
+        results({ kind: "not_found"}, null);
+    });
+}
+//GET ALL
+static getAll(result) {
+    db.query("SELECT * FROM users", (err, res) => {
+        if (err){
+            console.log("ERROR ", err);
+            result(null, err);
+            return;
+        }
+        console.log("users: ", res);
+        result(null, res)
+    })
+}
+
+  static updateById(id, user, result) {
+    db.query(
+      "UPDATE users SET  username = ?, email= ?, password = ? WHERE id = ?",
+      [ user.username,user.email, user.password, id],
+      (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(null, err);
+          return;
+        }
+
+        if (res.affectedRows == 0) {
+          // not found
+          result({ kind: "not_found" }, null);
+          return;
+        }
+
+        console.log("updated user: ", { ...user });
+        result(null, { ...user });
+      }
+    );
+}
+
 
   static findByEmail(email, result) {
     db.query("SELECT * FROM users WHERE email = ?", email, (err, res) => {
@@ -44,6 +95,28 @@ class User {
       result({ kind: "not_found" }, null);
     });
   }
+
+
+
+  
+static delete(id, result) {
+  db.query("DELETE FROM users WHERE id = ?", id, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    if (res.affectedRows == 0) {
+      // not found
+      result({ kind: "not_found" }, null);
+      return;
+    }
+
+    console.log("deleted user with id: ", id);
+    result(null, res);
+  });
+}
 
   //   This will remove the password field from being displayed
   //   in the data result at the frontend for security reasons.
