@@ -1,5 +1,6 @@
 const db = require("../utils/database");
 
+
 class User {
   constructor( username, email, password) {
     this.username = username;

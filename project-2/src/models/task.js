@@ -52,6 +52,23 @@ class Task {
     });
   }
 
+  static getALLByUserId(id,result) {
+    db.query("SELECT t.id,t.todo,t.status,u.username,t.created_on FROM users u INNER JOIN todos t ON u.id=t.user_id WHERE user_id=?", id,(err, res) => {
+      if (err) {
+        console.log("error ", err);
+        result(err, null);
+        return;
+    }
+    if (res.length) {
+        console.log("found user: ", res[0]);
+        result(null, res[0]);
+        return;
+    }
+    // if not found
+    result({ kind: "not_found"}, null);
+    });
+  }
+
   static filterTask(filterBy, result) {
     db.query(
       "SELECT * FROM todos WHERE status = ? ORDER BY created_on DESC",

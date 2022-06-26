@@ -4,10 +4,10 @@ const mysql = require("mysql2");
 
 
 const connection = mysql.createPool({
-  host:"us-cdbr-east-05..net",
-  user:"",
-  password:"84325fa4",
-  database:""
+  host:"localhost",
+  user:"root",
+  password:"Golden2022@",
+  database:"manager"
 })
 
 

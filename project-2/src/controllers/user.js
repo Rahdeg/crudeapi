@@ -2,6 +2,9 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const transporter = require("../../nodemailer");
+const multer=require('multer');
+const path = require('path');
+
 
 exports.register = (req, res) => {
   if (!req.body) {

@@ -10,6 +10,8 @@ router.put('/update/:id', taskController.updateTask);
 
 router.get("/", taskController.getTask);
 router.get("/:id", taskController.getTaskById);
+router.get("/user/:id", taskController.getTaskByUserId);
+
 
 router.post("/", taskController.create);
 // filterBy can be [completed] or [notCompleted]
