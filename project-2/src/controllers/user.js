@@ -2,6 +2,9 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const transporter = require("../../nodemailer");
+const multer=require('multer');
+const path = require('path');
+
 
 exports.register = (req, res) => {
   if (!req.body) {
@@ -10,11 +13,11 @@ exports.register = (req, res) => {
     });
   }
 
-  const { id, username, email, password, created_on } = req.body;
+  const { username, email, password} = req.body;
   const salt = bcrypt.genSaltSync(10);
   const hashed = bcrypt.hashSync(password, salt);
   const encrypedPass = hashed;
-  const user = new User(id, username, email, encrypedPass, created_on);
+  const user = new User( username, email, encrypedPass);
 
   const options = {
     from: "walett95@gmail.com",
@@ -41,6 +44,63 @@ exports.register = (req, res) => {
   });
 };
 
+exports.findAll = (req, res) => {
+  
+  User.getAll((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while getting users."
+      });
+    else res.send(data);
+  });
+};
+
+
+exports.findOne = (req, res) => {
+  User.findById(Number(req.params.id), (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found User with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving User with id " + req.params.id
+        });
+      }
+    } else res.send(data);
+  });
+};
+exports.update = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+  }
+  const { username, email, password } = req.body;
+  const salt= bcrypt.genSaltSync(10);
+  const hashed= bcrypt.hashSync(password,salt);
+  const encrypedPass= hashed;
+  User.updateById(
+    Number(req.params.id),
+    new User( username,email, encrypedPass),
+    (err, data) => {
+       if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found User with id ${req.params.id}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating User with id " + req.params.id
+          });
+        }
+      } else res.send(data);
+    }
+  );
+}
 exports.login = (req, res) => {
   const { email, password } = req.body;
 
@@ -94,3 +154,24 @@ exports.login = (req, res) => {
     }
   });
 };
+
+
+// Update a User by the id 
+
+
+exports.delete = (req, res) => {
+  User.delete(Number(req.params.id), (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found User with id ${req.params.id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Could not delete User with id " + req.params.id
+        });
+      }
+    } else res.send({ message: `User was deleted successfully!` });
+  });
+};
+
