@@ -1,0 +1,4 @@
+{    
+    "mongoURL": "//paste your mongdb url and change this file from example.json to default.json",
+    "baseUrl": "http://localhost:5000"
+}
