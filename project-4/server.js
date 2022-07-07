@@ -5,8 +5,7 @@ const morgan = require('morgan')
 const connectDB = require('./config/db')
 const bodyParser = require('body-parser')
 const app = express();
-const musicroutes = require('./src/routes/music');
-const artistroutes = require('./src/routes/artist');
+const userroutes = require('./src/routes/user')
 
 app.use(express.json({extended: false}));
 app.use(cors());
@@ -27,8 +26,8 @@ app.get("/", (req, res) => {
 
   
   
-  app.use("/api/v1/music", musicroutes);
-  app.use("/api/v1/artist", artistroutes);
+  app.use("/api/v1/music", userroutes);
+  
 
 
   app.all("*", (req, res) => {
