@@ -1,9 +1,9 @@
 
 exports.savemusic=(req,res)=>{
-res.json({return:true});
+
 }
 
 
-exports.getMusicbyid=(req,res,id)=>{
- 
+exports.getMusicbyid=(req,res)=>{
+ return res.json('success')
 }
