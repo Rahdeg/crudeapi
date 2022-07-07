@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
   app.all("*", (req, res) => {
     res.send({
       status: false,
-      messsage: "Oops! you've hitted an invalid route.",
+      messsage: "Oops! you've hit an invalid route.",
     });
   });
   
