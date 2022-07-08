@@ -5,7 +5,10 @@ const morgan = require('morgan')
 const connectDB = require('./config/db')
 const bodyParser = require('body-parser')
 const app = express();
-const userroutes = require('./src/routes/user')
+const userroutes = require('./src/routes/user');
+const albumroutes= require('./src/routes/album');
+const artistroutes = require('./src/routes/artist');
+const songroutes= require('./src/routes/song')
 
 app.use(express.json({extended: false}));
 app.use(cors());
@@ -26,7 +29,10 @@ app.get("/", (req, res) => {
 
   
   
-  app.use("/api/v1/music", userroutes);
+  app.use("/api/v1/user", userroutes);
+  app.use("/api/v1/album", albumroutes);
+  app.use("/api/v1/artist", artistroutes);
+  app.use("/api/v1/song", songroutes);
   
 
 
