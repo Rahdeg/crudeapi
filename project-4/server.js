@@ -9,6 +9,7 @@ const userroutes = require('./src/routes/user');
 const albumroutes= require('./src/routes/album');
 const artistroutes = require('./src/routes/artist');
 const songroutes= require('./src/routes/song')
+const favouritesroutes = require('./src/routes/favourites')
 
 app.use(express.json({extended: false}));
 app.use(cors());
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
   app.use("/api/v1/album", albumroutes);
   app.use("/api/v1/artist", artistroutes);
   app.use("/api/v1/song", songroutes);
+  app.use("/api/vi/favourites", favouritesroutes);
   
 
 
