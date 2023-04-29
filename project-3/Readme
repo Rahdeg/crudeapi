@@ -1,0 +1,36 @@
+# URL Shortener
+URL Shortener is an application that allows users to shorten long URLs. The app is built using React.js, Node.js, and MongoDB.
+
+## Features
+
+User authentication
+
+URL shortening and redirection
+
+View short URL statistics
+
+Admin dashboard to manage URLs and users
+
+## Installation
+
+Clone the repository: git clone https://github.com/your-username/url-shortener.git
+
+Install dependencies for both client and server: npm install
+
+Set up environment variables:
+
+Create a .env file in the root directory of the server
+
+Add the following environment variables:
+
+Replace your-mongodb-uri with the MongoDB URI for your database, and your-secret-key with a secret key for your app
+
+Start the app: npm run dev
+
+## Acknowledgements
+
+React.js
+
+Node.js
+
+MongoDB
